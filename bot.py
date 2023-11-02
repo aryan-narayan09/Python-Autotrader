@@ -22,7 +22,7 @@ order_placed = False
 
 
 #configuring binance client
-client = Client("2IKi1i29RqhQXvXtyBDN6ZT4a3uDdwXDpzmC8sIre9t22OxSUbHpTvILyOTdpaLV", "w5rcUZz4R29iF5Ec31m95uttJfc0hrZTOPxP1mLXllLiVUVl5c77Km57TpRGGZBI")
+client = Client("API_PRIVATE", "API_PUBLIC")
 
 
 #function to place buy order
