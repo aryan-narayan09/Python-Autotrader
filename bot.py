@@ -1,4 +1,4 @@
-import model
+import mode1
 import websocket, json
 from binance.client import Client
 from binance.enums import *
@@ -7,7 +7,7 @@ from binance.exceptions import BinanceAPIException, BinanceOrderException
 
 
 #Websocket stream
-SOCKET = "wss://fstream.binance.com/ws/adausdt_perpetual@continuousKline_15m"
+SOCKET = "wss://fstream.binance.com/ws/adausdt_perpetual@continuousKline_1m"
 
 
 #order related variables
@@ -19,17 +19,15 @@ signal = -1
 ppc = 0
 order_placed = False
 
-#utctimeob = datetime.utcnow()
-
 
 
 #configuring binance client
-client = Client("API_PRIVATE", "API_PUBLIC")
+client = Client("2IKi1i29RqhQXvXtyBDN6ZT4a3uDdwXDpzmC8sIre9t22OxSUbHpTvILyOTdpaLV", "w5rcUZz4R29iF5Ec31m95uttJfc0hrZTOPxP1mLXllLiVUVl5c77Km57TpRGGZBI")
 
 
 #function to place buy order
 def buy_order():
-    global prev_close, contract_size, lvg, ppc, order_placed
+    global prev_close, contract_size, lvg, ppc, order_placed, high
 
     #getting portfolio value
     acc_balances = client.futures_account_balance()
@@ -44,7 +42,7 @@ def buy_order():
     lvg = (contract_size*close)/balance
 
     close = json.loads(prev_close)     
-    buy_price = close
+    buy_price = high
     print(buy_price)
 
     
@@ -99,27 +97,6 @@ def buy_order():
 
 
 
-
-#function to place sell order
-# def sell_order():
-    
-#     try:
-#         print("Sending SELL order")
-#         client.futures_create_order( 
-#         orderId = 1,
-#         symbol = symbol,
-#         leverage = lvg,
-#         side = Client.SIDE_SELL,
-#         type = Client.FUTURE_ORDER_TYPE_STOP_MARKET,
-#         quantity = contract_size)
-#         print("Sell order placed")
-
-#     except BinanceOrderException as e:
-#         print(e)
-
-
-
-
 #opening connection to websocket
 def on_open(ws):
     global balance
@@ -137,7 +114,7 @@ def on_close(ws):
 #Executes everytime message received from websocket
 def on_message(ws, message):
 
-    global contract_size, order_placed, signal, ppc
+    global contract_size, order_placed, signal, ppc, high
 
     json_message = json.loads(message)
   
@@ -191,9 +168,9 @@ def on_message(ws, message):
         print("Ignore:{}".format(ignore))
         print("\n---------------------------------------------\n")
 
-        model.feedData()
+        mode1.feedData()
         
-        if model.signal == 1:
+        if mode1.signal == 1:
             buy_order()
 
 
